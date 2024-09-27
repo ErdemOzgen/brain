@@ -178,8 +178,6 @@ Remember to follow Django's best practices and ensure that your command is idemp
 
 
 
-![[utils.py.pdf]]
-
 
 The code snippet you provided is a Django custom management command that computes and notifies about Service Level Agreement (SLA) breaches for findings. The `_notify` function is defined within the `sla_compute_and_notify` function to provide a clear, organized structure and to encapsulate functionality that is specific to the SLA computation and notification process. Here are a few reasons why `_notify` is implemented as an inner function:
 
