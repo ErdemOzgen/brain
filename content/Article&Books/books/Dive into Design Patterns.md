@@ -186,3 +186,273 @@ Imagine you are designing a `Car` class that can have different types of engines
 ### Conclusion
 Both Dependency Injection and Composition are powerful techniques in OOP that help achieve code modularity, flexibility, and maintainability. They solve different problems and can be used together or independently, depending on the design requirements.
 
+# Design patterns
+
+Design patterns are typical solutions to commonly occurring  problems in software design. They are like pre-made blueprints that you can customize to solve a recurring design problem in your code. 
+
+
+## Difference between Algorithm and Design Pattern
+
+An analogy to an algorithm is a cooking recipe: both have clear  steps to achieve a goal. On the other hand, a pattern is more  like a blueprint: you can see what the result and its features  are, but the exact order of implementation is up to you. 
+
+
+
+### Categorization of Design Patterns by Intent
+
+All design patterns can be categorized based on their **intent** or **purpose**. The three main groups of design patterns are:
+
+1. **Creational Patterns**:
+   - **Purpose**: Provide object creation mechanisms that increase flexibility and reuse of existing code.
+   - **Examples**: Singleton, Factory Method, Abstract Factory, Builder, Prototype.
+
+2. **Structural Patterns**:
+   - **Purpose**: Explain how to assemble objects and classes into larger structures while keeping the structures flexible and efficient.
+   - **Examples**: Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy.
+
+3. **Behavioral Patterns**:
+   - **Purpose**: Take care of effective communication and the assignment of responsibilities between objects.
+   - **Examples**: Chain of Responsibility, Command, Interpreter, Iterator, Mediator, Memento, Observer, State, Strategy, Template Method, Visitor.
+
+
+
+Design patterns are a toolkit of tried and tested solutions  to common problems in software design. Even if you never  encounter these problems, knowing patterns is still useful  because it teaches you how to solve all sorts of problems using  principles of object-oriented design.
+
+# Software Design Principles
+
+## Code Reuse
+
+## Extensibility
+
+
+
+### Software Design Principles
+
+Software design principles are guidelines and best practices that developers follow to create robust, maintainable, and scalable software systems. These principles help in managing complexity, reducing dependencies, and promoting code reuse. They serve as a foundation for writing clean, understandable, and efficient code.
+
+Here are some of the most widely adopted software design principles:
+
+### 1. Single Responsibility Principle (SRP)
+- **Definition**: A class should have only one responsibility and should have only one reason to change. Each class should focus on a single functionality or feature, which makes the code more modular and easier to maintain.
+  
+- **Example**: Consider a class `Document` that handles both file reading and content formatting. This violates the SRP because it has multiple responsibilities.
+  
+  ```python
+  # Violation of SRP
+  class Document:
+      def read_file(self, filename):
+          # Read content from a file
+          pass
+      def format_content(self):
+          # Format the content of the document
+          pass
+  ```
+  
+  Instead, refactor it into separate classes:
+  
+  ```python
+  # Following SRP
+  class FileReader:
+      def read_file(self, filename):
+          # Read content from a file
+          pass
+
+  class ContentFormatter:
+      def format_content(self):
+          # Format the content of the document
+          pass
+  ```
+  
+  Each class now has a single responsibility: `FileReader` reads files, and `ContentFormatter` handles formatting.
+
+### 2. Open/Closed Principle (OCP)
+- **Definition**: Software entities (such as classes, modules, functions) should be open for extension but closed for modification. This means you should be able to extend a class's behavior without modifying its existing code.
+  
+- **Example**: Suppose you have a `Shape` class that calculates the area of various shapes. Adding new shapes would require modifying the existing code, which violates OCP.
+  
+  ```python
+  # Violation of OCP
+  class Shape:
+      def area(self, shape_type, dimension):
+          if shape_type == "circle":
+              return 3.14 * dimension * dimension
+          elif shape_type == "square":
+              return dimension * dimension
+  ```
+  
+  Instead, use polymorphism to extend the `Shape` class:
+  
+  ```python
+  # Following OCP
+  class Shape:
+      def area(self):
+          pass
+
+  class Circle(Shape):
+      def __init__(self, radius):
+          self.radius = radius
+      def area(self):
+          return 3.14 * self.radius * self.radius
+
+  class Square(Shape):
+      def __init__(self, side):
+          self.side = side
+      def area(self):
+          return self.side * self.side
+  ```
+  
+  Now, adding new shapes like `Rectangle` or `Triangle` can be done by extending the `Shape` class without modifying the existing code.
+
+### 3. Liskov Substitution Principle (LSP)
+- **Definition**: Subtypes must be substitutable for their base types without affecting the correctness of the program. This principle ensures that a derived class can replace its base class without changing the desired behavior.
+  
+- **Example**: Consider a `Bird` base class with a method `fly`. A subclass `Ostrich` that cannot fly would violate LSP.
+  
+  ```python
+  # Violation of LSP
+  class Bird:
+      def fly(self):
+          pass
+
+  class Ostrich(Bird):
+      def fly(self):
+          raise Exception("Ostriches can't fly!")
+  ```
+  
+  Refactor using a more appropriate hierarchy:
+  
+  ```python
+  # Following LSP
+  class Bird:
+      pass
+
+  class FlyingBird(Bird):
+      def fly(self):
+          pass
+
+  class Sparrow(FlyingBird):
+      def fly(self):
+          print("Sparrow is flying!")
+
+  class Ostrich(Bird):
+      # Ostrich class does not implement fly(), preserving LSP
+      pass
+  ```
+
+### 4. Interface Segregation Principle (ISP)
+- **Definition**: Clients should not be forced to implement interfaces they do not use. This principle suggests splitting large interfaces into smaller, more specific ones so that clients only need to know about the methods that are relevant to them.
+  
+- **Example**: Suppose you have an interface `IWorker` with methods `work()` and `eat()`. A `Robot` class implementing `IWorker` would have to implement `eat()`, which is not applicable.
+  
+  ```python
+  # Violation of ISP
+  class IWorker:
+      def work(self):
+          pass
+      def eat(self):
+          pass
+
+  class Robot(IWorker):
+      def work(self):
+          print("Robot working")
+      def eat(self):
+          raise Exception("Robots don't eat!")
+  ```
+  
+  Split the interface to avoid irrelevant implementations:
+  
+  ```python
+  # Following ISP
+  class IWorkable:
+      def work(self):
+          pass
+
+  class IFeedable:
+      def eat(self):
+          pass
+
+  class Robot(IWorkable):
+      def work(self):
+          print("Robot working")
+
+  class Human(IWorkable, IFeedable):
+      def work(self):
+          print("Human working")
+      def eat(self):
+          print("Human eating")
+  ```
+
+### 5. Dependency Inversion Principle (DIP)
+- **Definition**: High-level modules should not depend on low-level modules. Both should depend on abstractions. Also, abstractions should not depend on details. Details should depend on abstractions. This principle helps in decoupling modules and promoting flexible code.
+  
+- **Example**: Consider a `Light` class that is controlled by a `Switch` class. If the `Switch` class directly depends on the `Light` class, it violates DIP.
+  
+  ```python
+  # Violation of DIP
+  class Light:
+      def turn_on(self):
+          print("Light turned on")
+      def turn_off(self):
+          print("Light turned off")
+
+  class Switch:
+      def __init__(self, light):
+          self.light = light
+
+      def operate(self, state):
+          if state == "ON":
+              self.light.turn_on()
+          elif state == "OFF":
+              self.light.turn_off()
+  ```
+  
+  Refactor to depend on an abstraction:
+  
+  ```python
+  # Following DIP
+  class Switchable:
+      def turn_on(self):
+          pass
+      def turn_off(self):
+          pass
+
+  class Light(Switchable):
+      def turn_on(self):
+          print("Light turned on")
+      def turn_off(self):
+          print("Light turned off")
+
+  class Switch:
+      def __init__(self, device):
+          self.device = device
+
+      def operate(self, state):
+          if state == "ON":
+              self.device.turn_on()
+          elif state == "OFF":
+              self.device.turn_off()
+  ```
+  
+  By introducing the `Switchable` interface, the `Switch` class now depends on an abstraction rather than a concrete implementation.
+
+### Additional Software Design Principles
+
+1. **DRY (Don't Repeat Yourself)**:
+   - Avoid code duplication. Each piece of knowledge should have a single, unambiguous representation in the system.
+   - **Example**: If the same piece of code appears in multiple places, refactor it into a separate function or class.
+
+2. **KISS (Keep It Simple, Stupid)**:
+   - Write simple and straightforward code. Avoid unnecessary complexity, as complex solutions are more prone to errors and harder to maintain.
+   - **Example**: Instead of using complex nested loops and conditions, try to break down the logic into smaller, understandable functions.
+
+3. **YAGNI (You Ain't Gonna Need It)**:
+   - Avoid implementing features or functionality until they are actually needed.
+   - **Example**: Don’t add extra methods or properties to a class based on future use cases unless there is a clear requirement for them.
+
+4. **Composition Over Inheritance**:
+   - Favor using composition (has-a relationships) over inheritance (is-a relationships) to achieve greater flexibility and code reuse.
+   - **Example**: Instead of using class inheritance to extend functionality, use object composition to mix and match capabilities as needed.
+
+### Conclusion
+Software design principles are fundamental to writing clean, maintainable, and scalable software. By adhering to these principles, developers can create systems that are easier to understand, modify, and extend, ultimately leading to more robust and reliable software.
+
+
