@@ -456,3 +456,6 @@ Here are some of the most widely adopted software design principles:
 Software design principles are fundamental to writing clean, maintainable, and scalable software. By adhering to these principles, developers can create systems that are easier to understand, modify, and extend, ultimately leading to more robust and reliable software.
 
 
+# Patterns
+
+[[Creational Design Patterns]]
