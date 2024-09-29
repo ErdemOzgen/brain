@@ -315,5 +315,547 @@ Performance measures for regression algorithms help evaluate how well the model 
    - **Description:** Measures the average bias or tendency of the predictions to be systematically above or below the actual values. A positive value indicates underestimation, while a negative value indicates overestimation.
    - **Use Case:** Helpful in assessing whether the model is biased in one direction.
 
+-------------------
 
+
+$$
+\text{RMSE(X,h)} = \sqrt{\frac{1}{m} \sum_{i=1}^{m} \left( h(x_i) - y_i \right)^2}
+$$
+
+
+![[Pasted image 20240929121912.png]]
+
+- **h** is the system’s prediction function, also called a hypothesis. When the system is given an instance’s feature vector \( \mathbf{x}^{(i)} \), it outputs a predicted value \( \hat{y}^{(i)} \) (pronounced “y-hat”) for that instance:
+
+  $$
+  \hat{y}^{(i)} = h(\mathbf{x}^{(i)})
+  $$
+
+  For example, if your system predicts that the median housing price in the first district is $158,400, then:
+
+  $$
+  \hat{y}^{(1)} = h(\mathbf{x}^{(1)}) = 158,400
+  $$
+
+  The prediction error for this district would be calculated as:
+
+  $$
+  \hat{y}^{(1)} - y^{(1)} = 2,000
+  $$
+
+- **RMSE(X, h)** is the cost function measured on the set of examples \( \mathbf{X} \) using your hypothesis \( h \). It’s calculated as:
+
+  $$
+  \text{RMSE}(\mathbf{X}, h) = \sqrt{\frac{1}{m} \sum_{i=1}^{m} \left( h(\mathbf{x}^{(i)}) - y^{(i)} \right)^2}
+  $$
+
+- **Notations:**
+  - **Lowercase italic font** is used for scalar values, such as \( m \) or \( y^{(i)} \).
+  - **Lowercase bold font** is used for vectors, such as \( \mathbf{x}^{(i)} \).
+  - **Uppercase bold font** is used for matrices, such as \( \mathbf{X} \).
+
+![[Pasted image 20240929122545.png]]
+\
+
+# Pandas access type
+
+Pandas offers various methods for accessing and manipulating data in a DataFrame. Here’s a comprehensive list of the primary ways to access and select data in pandas:
+
+### 1. **Accessing Columns:**
+   - **Single Column:**
+     ```python
+     df['column_name']   # Returns a Series
+     df.column_name      # Dot notation (only for column names without spaces or special characters)
+     ```
+   - **Multiple Columns:**
+     ```python
+     df[['column1', 'column2']]  # Returns a DataFrame with the specified columns
+     ```
+
+### 2. **Accessing Rows:**
+   - **Single Row by Index:**
+     ```python
+     df.iloc[0]    # Accesses the first row by integer index (returns a Series)
+     df.loc[0]     # Accesses the row with index label 0 (if index is labeled numerically)
+     ```
+   - **Multiple Rows:**
+     ```python
+     df.iloc[0:3]     # Accesses the first three rows by integer index
+     df.loc[0:2]      # Accesses rows with index labels 0, 1, and 2 (if index is labeled numerically)
+     ```
+   - **Access by Boolean Mask:**
+     ```python
+     df[df['column_name'] > value]  # Access rows based on a condition
+     ```
+
+### 3. **Accessing Cells:**
+   - **Single Cell by Row and Column Name:**
+     ```python
+     df.at[row_label, 'column_name']    # Faster lookup for single values using labels
+     ```
+   - **Single Cell by Row and Column Index:**
+     ```python
+     df.iat[row_index, column_index]    # Faster lookup for single values using integer positions
+     ```
+
+### 4. **Slicing DataFrames:**
+   - **Slicing Rows and Columns:**
+     ```python
+     df.iloc[0:3, 0:2]    # Accesses the first three rows and first two columns (by position)
+     df.loc[0:2, ['column1', 'column2']]  # Accesses rows with labels 0, 1, 2 and specified columns (by label)
+     ```
+
+### 5. **Accessing by Boolean Indexing:**
+   - **Boolean Conditions on DataFrames:**
+     ```python
+     df[df['column_name'] == 'some_value']      # Rows where 'column_name' equals 'some_value'
+     df[(df['column1'] > 5) & (df['column2'] < 3)]  # Multiple conditions using & (AND) or | (OR)
+     ```
+
+### 6. **Using `.query()` for SQL-like Access:**
+   - **Query with Column Names:**
+     ```python
+     df.query('column_name == value')  # SQL-like syntax for accessing rows
+     ```
+   - **Complex Queries:**
+     ```python
+     df.query('column1 > 5 & column2 < 3')  # Use logical operators within query
+     ```
+
+### 7. **Accessing Using `.loc` and `.iloc`:**
+   - **`.loc`**: Label-based access for rows and columns.
+     ```python
+     df.loc[row_label, 'column_name']          # Single row and single column by label
+     df.loc[row_label, ['col1', 'col2']]       # Single row and multiple columns by labels
+     df.loc[[row_label1, row_label2], :]       # Multiple rows by labels and all columns
+     ```
+   - **`.iloc`**: Integer position-based access for rows and columns.
+     ```python
+     df.iloc[row_index, column_index]          # Single row and single column by integer index
+     df.iloc[row_index, [col_idx1, col_idx2]]  # Single row and multiple columns by integer indices
+     df.iloc[[row_idx1, row_idx2], :]          # Multiple rows by integer indices and all columns
+     ```
+
+### 8. **Accessing Using `.xs()` for Cross-Sectional Access:**
+   - Useful for selecting data from multi-indexed DataFrames.
+     ```python
+     df.xs(key='index_name', level='index_level')  # Access a cross-section of a multi-index DataFrame
+     ```
+
+### 9. **Accessing with `.loc` and `.iloc` Combined with `.at` and `.iat`:**
+   - **Access Single Value Using `.at`:**
+     ```python
+     df.at[row_label, 'column_name']    # Label-based access for a single value
+     ```
+   - **Access Single Value Using `.iat`:**
+     ```python
+     df.iat[row_index, column_index]    # Integer position-based access for a single value
+     ```
+
+### 10. **Using `.get()` Method:**
+   - Similar to dictionary-style access, useful when you want to provide a default value if the column doesn't exist.
+     ```python
+     df.get('column_name', default_value)  # Returns the column if exists, else returns the default_value
+     ```
+
+### 11. **Using `.filter()` Method:**
+   - **Filter by Columns or Index:**
+     ```python
+     df.filter(items=['col1', 'col2'], axis=1)      # Filter specific columns
+     df.filter(like='prefix', axis=1)               # Select columns with 'prefix'
+     df.filter(regex='regex_pattern', axis=1)       # Select columns matching a regex pattern
+     df.filter(like='substring', axis=0)            # Select rows with index containing 'substring'
+     ```
+
+### 12. **Using `.loc` with Index Slices (`slice()`)**:
+   - **Selecting Ranges of Rows:**
+     ```python
+     df.loc[slice(start_label, end_label), :]   # Select rows within the specified range of labels
+     ```
+
+### 13. **Using `.sample()` to Access Random Rows or Columns:**
+   - **Select Random Rows or Columns:**
+     ```python
+     df.sample(n=5)           # Select 5 random rows
+     df.sample(frac=0.1)      # Select 10% of the rows randomly
+     df.sample(n=3, axis=1)   # Select 3 random columns
+     ```
+
+These are the main data access methods for pandas DataFrames. Depending on your use case, you can choose the method that fits best for selecting or manipulating your data.
+
+
+`value_counts()` is a powerful pandas method that provides a quick and easy way to get the frequency counts of unique values in a Series or column of a DataFrame. Below, I'll provide examples and other similar tactics for summarizing, analyzing, and manipulating categorical and numerical data in pandas.
+
+
+
+# Example tactics for Dataframe discovery
+### 1. **`.value_counts()` Usage**
+- **Counting Unique Values in a Column:**
+  ```python
+  housing['ocean_proximity'].value_counts()
+  ```
+  This will display the frequency of each unique category in the `ocean_proximity` column.
+
+- **Example Output:**
+  ```
+  NEAR BAY     3
+  INLAND       2
+  NEAR OCEAN   1
+  Name: ocean_proximity, dtype: int64
+  ```
+  
+- **Sort and Normalize:**
+  ```python
+  housing['ocean_proximity'].value_counts(normalize=True)  # Show percentages instead of counts
+  housing['ocean_proximity'].value_counts(sort=False)      # Prevent sorting of the values
+  ```
+
+### 2. **`.unique()` and `.nunique()` for Unique Value Analysis**
+- **Finding Unique Values:**
+  ```python
+  housing['ocean_proximity'].unique()  # Returns an array of unique values in the column
+  ```
+  - Output:
+    ```
+    array(['NEAR BAY', 'INLAND', 'NEAR OCEAN'], dtype=object)
+    ```
+  
+- **Counting Unique Values:**
+  ```python
+  housing['ocean_proximity'].nunique()  # Returns the number of unique values
+  ```
+  - Output:
+    ```
+    3
+    ```
+
+### 3. **`.count()` for Counting Non-NA Values**
+- **Count Non-NA/Null Values:**
+  ```python
+  housing['ocean_proximity'].count()  # Counts only non-null values in the column
+  ```
+  
+- **Count Non-NA/Null Values Across the DataFrame:**
+  ```python
+  housing.count()  # Counts non-null values for each column in the DataFrame
+  ```
+
+### 4. **`.describe()` for Summary Statistics**
+- **Generate Summary Statistics for Categorical and Numerical Columns:**
+  ```python
+  housing['ocean_proximity'].describe()  # Provides count, unique, top, and frequency for categorical columns
+  housing.describe()                     # Summary statistics for numerical columns (mean, std, min, etc.)
+  ```
+
+### 5. **`.groupby()` for Grouping and Aggregating Data**
+- **Group and Count:**
+  ```python
+  housing.groupby('ocean_proximity').size()  # Similar to value_counts, but more flexible
+  ```
+  
+- **Group and Compute Other Statistics:**
+  ```python
+  housing.groupby('ocean_proximity')['median_house_value'].mean()  # Average house value by proximity
+  housing.groupby('ocean_proximity').agg({'median_house_value': 'mean', 'population': 'sum'})  # Multiple aggregations
+  ```
+
+### 6. **`.crosstab()` and `.pivot_table()` for Contingency Tables**
+- **Cross Tabulation:**
+  ```python
+  pd.crosstab(housing['ocean_proximity'], housing['housing_median_age'])  # Frequency table of two variables
+  ```
+  
+- **Pivot Table:**
+  ```python
+  housing.pivot_table(values='median_house_value', index='ocean_proximity', columns='housing_median_age', aggfunc='mean')
+  ```
+  
+### 7. **`.mode()` for Finding the Most Frequent Values**
+- **Get the Most Frequent Value in a Column:**
+  ```python
+  housing['ocean_proximity'].mode()  # Returns the mode (most common value)
+  ```
+
+### 8. **`.apply()` for Applying Functions Across Columns or Rows**
+- **Applying a Custom Function to a Column:**
+  ```python
+  housing['median_income_category'] = housing['median_income'].apply(lambda x: 'High' if x > 5 else 'Low')
+  ```
+  This creates a new column based on a condition applied to each value in the `median_income` column.
+
+### 9. **`.map()` and `.replace()` for Value Mapping**
+- **Map Values Using a Dictionary:**
+  ```python
+  proximity_map = {'NEAR BAY': 'Close to Bay', 'INLAND': 'Inland Area', 'NEAR OCEAN': 'Close to Ocean'}
+  housing['ocean_proximity'] = housing['ocean_proximity'].map(proximity_map)
+  ```
+  
+- **Replace Values Using `.replace()`:**
+  ```python
+  housing['ocean_proximity'].replace({'Close to Bay': 'Bay Area'}, inplace=True)
+  ```
+
+### 10. **`.isin()` for Filtering by Multiple Values**
+- **Filter Rows Based on a List of Values:**
+  ```python
+  housing[housing['ocean_proximity'].isin(['NEAR BAY', 'INLAND'])]  # Rows where 'ocean_proximity' is 'NEAR BAY' or 'INLAND'
+  ```
+
+### 11. **`.cut()` and `.qcut()` for Binning Continuous Data**
+- **Binning Continuous Data into Categories:**
+  ```python
+  housing['income_bin'] = pd.cut(housing['median_income'], bins=[0, 2, 4, 6, 8], labels=['Low', 'Mid', 'High', 'Very High'])
+  ```
+
+- **Quantile-based Binning:**
+  ```python
+  housing['income_quantile'] = pd.qcut(housing['median_income'], q=4)  # Divides data into 4 equal-sized bins
+  ```
+
+### 12. **`.rank()` and `.sort_values()` for Ranking and Sorting**
+- **Ranking Values:**
+  ```python
+  housing['income_rank'] = housing['median_income'].rank()
+  ```
+  
+- **Sorting by Column:**
+  ```python
+  housing.sort_values(by='median_house_value', ascending=False)  # Sort DataFrame by house value in descending order
+  ```
+
+### 13. **`.duplicated()` and `.drop_duplicates()` for Managing Duplicates**
+- **Identify Duplicates:**
+  ```python
+  housing.duplicated(subset='ocean_proximity')  # Returns a boolean Series indicating duplicates
+  ```
+  
+- **Remove Duplicates:**
+  ```python
+  housing.drop_duplicates(subset='ocean_proximity', inplace=True)  # Removes duplicate rows based on 'ocean_proximity'
+  ```
+
+### 14. **`.corr()` for Correlation Analysis**
+- **Correlation Between Numerical Columns:**
+  ```python
+  housing.corr()  # Returns correlation matrix for numerical columns
+  ```
+
+### 15. **`.plot()` for Visualizing Value Counts**
+- **Plot Value Counts:**
+  ```python
+  housing['ocean_proximity'].value_counts().plot(kind='bar')  # Visualize value counts as a bar plot
+  ```
+
+These methods and tactics provide a comprehensive approach to analyzing and manipulating data in pandas DataFrames, similar to how you would use `.value_counts()` to understand the distribution of categorical variables.
+
+
+
+# Data snooping bias
+
+**Data snooping bias** (also known as **data leakage** or **look-ahead bias**) occurs when a machine learning model is inadvertently trained or evaluated using information that would not be available at prediction time, thereby leading to overly optimistic performance estimates. This typically happens when data that should be kept separate (such as training, validation, and test data) is somehow shared or influenced during the model development process.
+
+### Causes of Data Snooping Bias:
+1. **Using Test Data in Model Selection or Hyperparameter Tuning:**
+   - If the test data is used multiple times to select models or tune hyperparameters, the model’s performance will be biased because it has indirectly "seen" the test data during training.
+   
+2. **Feature Engineering Using Future Information:**
+   - Creating features using information that would only be available in the future or that would be known after the event being predicted.
+
+3. **Leakage Through Data Preparation:**
+   - Sharing information between training and test sets during data preparation steps, such as normalizing or scaling based on the entire dataset instead of just the training set.
+
+4. **Unintentional Data Overlap:**
+   - Overlapping data in different subsets (e.g., using the same samples in training and test sets) or using variables that are directly correlated with the target variable in a way that would not be present during deployment.
+
+### Consequences of Data Snooping Bias:
+- **Overestimated Performance:** The model's performance on validation or test data may appear much better than it will be in real-world scenarios, leading to false confidence in the model.
+- **Poor Generalization:** Since the model is essentially overfitting on the information it shouldn’t have access to, it will not generalize well to truly unseen data.
+
+### Example of Data Snooping Bias:
+Suppose you are building a model to predict whether a stock’s price will rise or fall based on historical data. If you include information about whether the stock price rose or fell in the next month as part of your feature set, your model will achieve very high accuracy. However, this is a clear example of data snooping bias, as it uses future information that wouldn’t be available in a real-world setting.
+
+### How to Avoid Data Snooping Bias:
+1. **Separate Data Properly:**
+   - Maintain strict separation between training, validation, and test sets.
+   - Never use the test set for model selection or hyperparameter tuning.
+
+2. **Avoid Using Future Information:**
+   - Do not include features in your model that would not be known at the time of prediction.
+
+3. **Create Training Pipelines:**
+   - Use separate pipelines for data preparation to avoid data leakage between training and testing phases (e.g., scaling based on training data only).
+
+4. **Cross-Validation:**
+   - Use cross-validation correctly to ensure that data leakage is minimized and that the model is evaluated fairly.
+
+5. **Be Cautious with Time Series Data:**
+   - When working with time series data, ensure that you don’t use future data points in training that wouldn’t be available at the prediction time.
+
+In summary, data snooping bias occurs when the model is trained or validated using information that would not be available at prediction time, leading to misleading performance metrics. This bias must be carefully avoided to ensure that the model’s performance is reliable and realistic.
+
+### Explanation of `StratifiedShuffleSplit`
+[StratifiedShuffleSplit] is a cross-validation strategy provided by `sklearn` that splits the data into training and testing sets while preserving the distribution of a specified class or feature variable. This technique is especially useful when dealing with imbalanced datasets, as it ensures that each subset (training and testing) maintains the same proportion of class labels as the original dataset.
+
+### Why Use `StratifiedShuffleSplit`?
+- **Maintains Class Distribution:** Ensures that the train and test sets have the same proportion of classes as the original dataset. This is crucial when the target classes are imbalanced.
+- **Improved Model Evaluation:** By preserving the class distribution, you can get a more reliable evaluation of your model’s performance.
+- **Prevents Bias in Small Datasets:** Avoids the issue of certain classes being overrepresented or underrepresented in training or testing data.
+
+### Parameters of `StratifiedShuffleSplit`
+- `n_splits`: Number of re-shuffling and splitting iterations (default is 10).
+- `test_size` or `train_size`: Proportion or absolute number of test or train samples.
+- `random_state`: Controls the shuffling for reproducibility.
+
+### Example: Using `StratifiedShuffleSplit` in Python
+Below is an example of how to use `StratifiedShuffleSplit` with a dataset:
+
+```python
+from sklearn.model_selection import StratifiedShuffleSplit
+import pandas as pd
+
+# Sample data
+data = {
+    'feature1': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+    'feature2': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    'target': ['A', 'B', 'A', 'B', 'A', 'B', 'A', 'B', 'A', 'B']
+}
+
+# Create a DataFrame
+df = pd.DataFrame(data)
+
+# Define features and target
+X = df[['feature1', 'feature2']]
+y = df['target']
+
+# Create a StratifiedShuffleSplit object
+strat_split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+
+# Split the data into training and testing sets
+for train_index, test_index in strat_split.split(X, y):
+    X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+    y_train, y_test = y.iloc[train_index], y.iloc[test_index]
+
+# Display the results
+print("Train Set:")
+print(X_train)
+print(y_train)
+print("\nTest Set:")
+print(X_test)
+print(y_test)
+```
+
+### Output:
+```
+Train Set:
+   feature1  feature2
+5        60         6
+2        30         3
+4        50         5
+3        40         4
+8        90         9
+9       100        10
+0        10         1
+1        20         2
+
+5    B
+2    A
+4    A
+3    B
+8    A
+9    B
+0    A
+1    B
+Name: target, dtype: object
+
+Test Set:
+   feature1  feature2
+7        80         8
+6        70         7
+
+7    B
+6    A
+Name: target, dtype: object
+```
+
+### Explanation:
+- In this example, the original dataset contains equal proportions of classes `A` and `B`.
+- `StratifiedShuffleSplit` is applied with a single split (`n_splits=1`) and a `test_size` of 20% (`test_size=0.2`).
+- After splitting, both the training and test sets maintain the same proportion of class labels `A` and `B`.
+
+### Additional Parameters and Methods:
+- `split(X, y)`: Splits `X` (features) and `y` (target labels) into training and testing indices while maintaining the class distribution.
+- `n_splits`: Number of re-shuffling and splitting iterations (default is 10).
+- `random_state`: Controls the randomness of the split for reproducibility.
+- `test_size`: The proportion of the dataset to include in the test split.
+
+### When to Use `StratifiedShuffleSplit`
+- **Imbalanced Datasets:** When the target variable has an uneven distribution of classes.
+- **Classification Tasks:** Especially useful for classification problems where preserving class distribution is crucial.
+- **Small Datasets:** Helps prevent bias and maintains a balanced representation of classes in training and testing sets.
+
+### Summary
+`StratifiedShuffleSplit` is a powerful tool to ensure that your training and testing sets maintain the same distribution of classes as the original dataset, making it an ideal choice for classification problems with imbalanced classes.
+
+
+### Standard Correlation Coefficient (Pearson’s r)
+
+The **standard correlation coefficient**, also known as **Pearson’s correlation coefficient** or **Pearson’s r**, measures the linear relationship between two continuous variables. It indicates the strength and direction of the relationship, ranging from -1 to +1.
+
+### Formula
+The formula for Pearson’s *r* is:
+
+$$
+r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} \cdot \sqrt{\sum_{i=1}^{n} (y_i - \bar{y})^2}}
+$$
+
+Where:
+- \ ( x_i \) and \( y_i \) are the individual sample points of variables \( x \) and \( y \).
+- \ ( \bar{x} \) and \( \bar{y} \) are the mean values of variables \( x \) and \( y \).
+- \ ( n \) is the number of sample points.
+
+### Interpretation
+- **Range:** The correlation coefficient \( r \) ranges from -1 to +1:
+  - **\( r = 1 \)**: Perfect positive linear correlation (as one variable increases, the other increases proportionally).
+  - **\( r = -1 \)**: Perfect negative linear correlation (as one variable increases, the other decreases proportionally).
+  - **\( r = 0 \)**: No linear correlation (the variables do not have any linear relationship).
+
+- **Positive Correlation:** If \( r \) is positive, it indicates that as one variable increases, the other tends to increase.
+- **Negative Correlation:** If \( r \) is negative, it indicates that as one variable increases, the other tends to decrease.
+- **Magnitude of Correlation:**
+  - The closer \( r \) is to +1 or -1, the stronger the linear relationship between the variables.
+  - The closer \( r \) is to 0, the weaker the linear relationship.
+
+### Assumptions of Pearson’s Correlation
+1. **Linearity:** Assumes a linear relationship between the variables.
+2. **Continuous Data:** Both variables should be continuous.
+3. **Normality:** The variables should be approximately normally distributed.
+4. **No Outliers:** Pearson’s *r* is sensitive to outliers, which can skew the results.
+
+### Example in Python
+You can use `pandas` or `scipy` to calculate Pearson’s correlation coefficient in Python. Here's an example using `pandas`:
+
+```python
+import pandas as pd
+
+# Sample data
+data = {
+    'height': [150, 160, 170, 180, 190],
+    'weight': [50, 55, 60, 70, 80]
+}
+
+# Create a DataFrame
+df = pd.DataFrame(data)
+
+# Calculate Pearson's correlation coefficient
+correlation_matrix = df.corr(method='pearson')
+print("Pearson's r correlation matrix:\n", correlation_matrix)
+
+
+```
+OUTPUT:
+
+Pearson's r correlation matrix:
+         height   weight
+height   1.000000  0.981981
+weight   0.981981  1.000000
 
