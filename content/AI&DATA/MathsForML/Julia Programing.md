@@ -14,3 +14,5 @@
 
 * https://datasciencejuliahackers.com
 * https://github.com/h-Klok/StatsWithJuliaBook/tree/master
+
+* https://web.stanford.edu/~boyd/vmls/
