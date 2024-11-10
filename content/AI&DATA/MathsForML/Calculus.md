@@ -1,6 +1,6 @@
 
 https://math.libretexts.org/Bookshelves/Calculus
-
+https://jverzani.github.io/CalculusWithJuliaNotes.jl/
 
 # MIT 18.01SC | Fall 2010 | Undergraduate
 
