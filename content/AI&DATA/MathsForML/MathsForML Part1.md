@@ -9,3 +9,10 @@
 
 * https://web.stanford.edu/class/cs109/
 * https://chrispiech.github.io/probabilityForComputerScientists/en/
+
+
+# Python
+
+* https://ethanweed.github.io/pythonbook/landingpage.html
+* https://pabloinsente.github.io/intro-linear-algebra
+* 
